@@ -18,10 +18,10 @@ def regist():
 def main():
     if request.method == 'POST':
         if(request.form['id'] == '현채' and request.form['pw'] == '123'):
-            session['logged'] = True
-            session['user'] = request.form['id']
-            #return 'Hi, ' + request.form['id']
-            return render_template('main.html')
+            # session['logged'] = True
+            # session['user'] = request.form['id']
+            login_info = request.form['id']
+            return render_template('main.html', login_info_html=login_info)
         else:
             return """<script>alert("wrong!");location.href='/login';</script>"""
     else:
