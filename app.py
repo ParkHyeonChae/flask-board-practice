@@ -1,4 +1,7 @@
-from flask import Flask, render_template, request, session, url_for 
+
+from flask import Flask, render_template, request, session, url_for
+import pymysql
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -6,21 +9,20 @@ def index():
     session['logged'] = False
     return render_template('index.html')
 
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login(): 
     return render_template('login.html')
 
-@app.route('/regist')
-def regist(): 
+@app.route('/regist'])
     return render_template('regist.html')        
 
 @app.route('/main', methods=['POST'])
 def main():
     if request.method == 'POST':
-        if(request.form['id'] == '현채' and request.form['pw'] == '123'):
+        if(request.form['name'] == '현채' and request.form['pw'] == '123'):
             # session['logged'] = True
             # session['user'] = request.form['id']
-            login_info = request.form['id']
+            login_info = request.form['name']
             return render_template('main.html', login_info_html=login_info)
         else:
             return """<script>alert("wrong!");location.href='/login';</script>"""
