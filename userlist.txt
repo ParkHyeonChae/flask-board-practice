@@ -1,0 +1,10 @@
+mysql> CREATE DATABASE userlist;
+
+mysql> use userlist
+
+mysql> CREATE TABLE tbl_user (
+     > user_name VARCHAR(20) NOT NULL,
+     > user_password VARCHAR(20) NOT NULL,
+     > PRIMARY KEY (user_name)
+     > );
+
