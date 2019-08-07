@@ -9,13 +9,44 @@ def index():
     session['logged'] = False
     return render_template('index.html')
 
-@app.route('/login')
-def login(): 
-    return render_template('login.html')
+@app.route('/login', methods=['GET','POST'])
+def login():
+    # error = None
+    # if request.method == 'POST':
+    #     userid = request.form['id']
+    #     userpw = request.form['pw']
+
+    #     login_info = request.form['id']
+        
+    #     conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+    #     cursor = conn.cursor()
+         
+    #     query = "SELECT user_name FROM tbl_user WHERE user_password = (%s)"
+    #     value = (userpw)
+    #     cursor.execute("set names utf8")
+    #     cursor.execute(value)
+    #     data = (cursor.fetchall())
+        
+    #     cursor.close()
+    #     conn.close()
+        
+    #     for row in data:
+    #         data = row[0]
+        
+    #     if data:
+    #         print ('login success')
+    #         return render_template('main.html', login_info_html = login_info)
+    #     else:
+    #         error = 'Invalid input data detected!'
+    #         #return render_template('python_login.html', error=error)
+    
+    else:
+        return render_template ('login.html')
+app.secret_key = 'sample_secret'
 
 @app.route('/regist', methods=['GET', 'POST'])
 def regist():
-    error= None
+    error = None
     if request.method == 'POST':
 
         userid = request.form['id']
@@ -46,19 +77,9 @@ def regist():
     else:
         return render_template('regist.html')        
 
-@app.route('/main', methods=['POST'])
+@app.route('/main',methods=['GET','POST'])
 def main():
-    if request.method == 'POST':
-        if(request.form['id'] == '현채' and request.form['pw'] == '123'):
-            # session['logged'] = True
-            # session['user'] = request.form['id']
-            login_info = request.form['id']
-            return render_template('main.html', login_info_html=login_info)
-        else:
-            return """<script>alert("wrong!");location.href='/login';</script>"""
-    else:
-        return """<script>alert("not allowd!");location.href='/login';</script>"""
-app.secret_key = 'sample_secret'
+    return render_template('main.html')
 
 if __name__ == '__main__':
     app.run()
