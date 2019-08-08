@@ -11,34 +11,35 @@ def index():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-    # error = None
-    # if request.method == 'POST':
-    #     userid = request.form['id']
-    #     userpw = request.form['pw']
+    error = None
+    if request.method == 'POST':
 
-    #     login_info = request.form['id']
+        userid = request.form['id']
+        userpw = request.form['pw']
+
+        login_info = request.form['id']
         
-    #     conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
-    #     cursor = conn.cursor()
+        conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+        cursor = conn.cursor()
          
-    #     query = "SELECT user_name FROM tbl_user WHERE user_password = (%s)"
-    #     value = (userpw)
-    #     cursor.execute("set names utf8")
-    #     cursor.execute(value)
-    #     data = (cursor.fetchall())
+        query = "SELECT * FROM tbl_user WHERE user_name = %s AND user_password = %s"
+        value = (userid, userpw)
+        cursor.execute("set names utf8")
+        cursor.execute(query, value)
+        data = (cursor.fetchall())
         
-    #     cursor.close()
-    #     conn.close()
+        cursor.close()
+        conn.close()
         
-    #     for row in data:
-    #         data = row[0]
+        for row in data:
+            data = row[0]
         
-    #     if data:
-    #         print ('login success')
-    #         return render_template('main.html', login_info_html = login_info)
-    #     else:
-    #         error = 'Invalid input data detected!'
-    #         #return render_template('python_login.html', error=error)
+        if data:
+            # print ('login success')
+            return render_template('main.html', login_info_html = login_info)
+        else:
+            error = 'Invalid input data detected!'
+            #return render_template('python_login.html', error=error)
     
     else:
         return render_template ('login.html')
@@ -61,6 +62,7 @@ def regist():
         value = (userid, userpw)
         cursor.execute(query, value)
         data = cursor.fetchall()
+
         print (data)
         if not data:
             conn.commit()
@@ -72,6 +74,7 @@ def regist():
             return "Register Failed"
         cursor.close()
         conn.close()
+        
         return render_template('index.html')
 
     else:
