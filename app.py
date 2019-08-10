@@ -11,7 +11,7 @@ def index():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-    error = None
+    #error = None
     if request.method == 'POST':
 
         userid = request.form['id']
@@ -24,9 +24,9 @@ def login():
          
         query = "SELECT * FROM tbl_user WHERE user_name = %s AND user_password = %s"
         value = (userid, userpw)
-        cursor.execute("set names utf8")
+        #cursor.execute("set names utf8")
         cursor.execute(query, value)
-        data = (cursor.fetchall())
+        data = (cursor.fetchall()) # SQL 실행 결과를 가져옴
         
         cursor.close()
         conn.close()
@@ -38,7 +38,7 @@ def login():
             # print ('login success')
             return render_template('main.html', login_info_html = login_info)
         else:
-            error = 'Invalid input data detected!'
+            print ('Invalid input data detected!')
             #return render_template('python_login.html', error=error)
     
     else:
@@ -47,36 +47,41 @@ app.secret_key = 'sample_secret'
 
 @app.route('/regist', methods=['GET', 'POST'])
 def regist():
-    error = None
+    #error = None
     if request.method == 'POST':
 
         userid = request.form['id']
         userpw = request.form['pw']
 
-        print(userid, userpw)
-
         conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
         cursor = conn.cursor()
 
-        query = "INSERT INTO tbl_user (user_name, user_password) values (%s, %s)"
-        value = (userid, userpw)
+        query = "SELECT * FROM tbl_user WHERE user_name = %s"
+        value = (userid)
+        
         cursor.execute(query, value)
-        data = cursor.fetchall()
+        data = (cursor.fetchall()) 
 
-        print (data)
-        if not data:
-            conn.commit()
-            print (data)
-            return "Register Success"
+        if data:
+            return render_template('errorpage.html') 
         else:
-            conn.rollback()
-            print (data)
-            return "Register Failed"
+            query = "INSERT INTO tbl_user (user_name, user_password) values (%s, %s)"
+            value = (userid, userpw)
+            cursor.execute(query, value)
+            data = cursor.fetchall()
+            
+            if not data:
+                conn.commit()
+                #print (data)
+                return render_template('index.html') 
+            else:
+                conn.rollback()
+                #print (data)
+                #return "Register Failed"
+                return render_template('errorpage.html') 
+
         cursor.close()
         conn.close()
-        
-        return render_template('index.html')
-
     else:
         return render_template('regist.html')        
 
