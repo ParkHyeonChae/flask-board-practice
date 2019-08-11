@@ -1,18 +1,29 @@
 
-from flask import Flask, render_template, session, url_for, request
+from flask import Flask, render_template, session, url_for, request, redirect
 import pymysql
 
 app = Flask(__name__)
+app.secret_key = 'sample_secret'
 
 @app.route('/')
 def index():
-    session['logged'] = False
-    return render_template('index.html')
+    if 'username' in session:
+        username = session['username']
+        return render_template('index.html', logininfo = username)
+    # session['logged'] = False
+    return render_template('index.html', logininfo = "로그인 안됨" )
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 @app.route('/login', methods=['GET','POST'])
 def login():
     #error = None
     if request.method == 'POST':
+
+        session['username'] = request.form['id']
 
         userid = request.form['id']
         userpw = request.form['pw']
@@ -43,7 +54,7 @@ def login():
     
     else:
         return render_template ('login.html')
-app.secret_key = 'sample_secret'
+#app.secret_key = 'sample_secret'
 
 @app.route('/regist', methods=['GET', 'POST'])
 def regist():
@@ -90,4 +101,4 @@ def main():
     return render_template('main.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
