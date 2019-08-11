@@ -38,7 +38,7 @@ def login():
             # print ('login success')
             return render_template('main.html', login_info_html = login_info)
         else:
-            print ('Invalid input data detected!')
+            return render_template('loginError.html')
             #return render_template('python_login.html', error=error)
     
     else:
@@ -63,7 +63,7 @@ def regist():
         data = (cursor.fetchall()) 
 
         if data:
-            return render_template('errorpage.html') 
+            return render_template('registError.html') 
         else:
             query = "INSERT INTO tbl_user (user_name, user_password) values (%s, %s)"
             value = (userid, userpw)
@@ -73,12 +73,12 @@ def regist():
             if not data:
                 conn.commit()
                 #print (data)
-                return render_template('index.html') 
+                return render_template('registSuccess.html') 
             else:
                 conn.rollback()
                 #print (data)
                 #return "Register Failed"
-                return render_template('errorpage.html') 
+                return render_template('registError.html') # 적용이 안됨
 
         cursor.close()
         conn.close()
