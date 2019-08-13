@@ -51,7 +51,6 @@ def login():
         else:
             return render_template('loginError.html')
             #return render_template('python_login.html', error=error)
-    
     else:
         return render_template ('login.html')
 #app.secret_key = 'sample_secret'
@@ -68,28 +67,22 @@ def regist():
         cursor = conn.cursor()
 
         query = "SELECT * FROM tbl_user WHERE user_name = %s"
-        value = (userid)
+        value = userid
         
         cursor.execute(query, value)
-        data = (cursor.fetchall()) 
+        data = (cursor.fetchall())
 
+        #import pdb; pdb.set_trace()
         if data:
-            return render_template('registError.html') 
+            conn.rollback()
+            return render_template('registError.html', roa =1) 
         else:
             query = "INSERT INTO tbl_user (user_name, user_password) values (%s, %s)"
             value = (userid, userpw)
             cursor.execute(query, value)
             data = cursor.fetchall()
-            
-            if not data:
-                conn.commit()
-                #print (data)
-                return render_template('registSuccess.html') 
-            else:
-                conn.rollback()
-                #print (data)
-                #return "Register Failed"
-                return render_template('registError.html') # 적용이 안됨
+            conn.commit()
+            return render_template('registSuccess.html')
 
         cursor.close()
         conn.close()
