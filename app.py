@@ -13,6 +13,18 @@ def index():
     # session['logged'] = False
     return render_template('index.html', logininfo = "로그인 안됨" )
 
+@app.route('/post')
+def post():
+    conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+    cursor = conn.cursor()
+    query = "SELECT user_name FROM tbl_user "
+    cursor.execute(query)
+    user_list = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    return render_template('post.html', userlist=user_list)
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
@@ -28,7 +40,7 @@ def login():
         userid = request.form['id']
         userpw = request.form['pw']
 
-        login_info = request.form['id']
+        logininfo = request.form['id']
         
         conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
         cursor = conn.cursor()
@@ -47,7 +59,7 @@ def login():
         
         if data:
             # print ('login success')
-            return render_template('main.html', login_info_html = login_info)
+            return render_template('main.html', logininfo = logininfo)
         else:
             return render_template('loginError.html')
             #return render_template('python_login.html', error=error)
@@ -75,7 +87,7 @@ def regist():
         #import pdb; pdb.set_trace()
         if data:
             conn.rollback()
-            return render_template('registError.html', roa =1) 
+            return render_template('registError.html') 
         else:
             query = "INSERT INTO tbl_user (user_name, user_password) values (%s, %s)"
             value = (userid, userpw)
@@ -89,8 +101,11 @@ def regist():
     else:
         return render_template('regist.html')        
 
-@app.route('/main',methods=['GET','POST'])
+@app.route('/main', methods=['GET','POST'])
 def main():
+    if 'username' in session:
+        username = session['username']
+        return render_template('main.html', logininfo = username)
     return render_template('main.html')
 
 if __name__ == '__main__':
