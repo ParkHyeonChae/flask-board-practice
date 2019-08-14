@@ -19,11 +19,14 @@ def post():
     cursor = conn.cursor()
     query = "SELECT user_name FROM tbl_user "
     cursor.execute(query)
-    user_list = cursor.fetchall()
+    user_list = [item[0] for item in cursor.fetchall()]
+
+    # for row in user_list:
+    #     user_list = row[]
     
     cursor.close()
     conn.close()
-    return render_template('post.html', userlist=user_list)
+    return render_template('post.html', userlist = user_list)
 
 @app.route('/logout')
 def logout():

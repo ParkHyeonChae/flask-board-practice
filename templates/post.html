@@ -5,8 +5,11 @@
 		<title>post page</title>
 	</head>
 	<body>
-		<form>
-                <h2>{{userlist}}</h2><br>
-		</form>
+			{% for post in userlist %}
+			
+			{{post}}<br>
+			
+			{% endfor %}
+
 	</body>
 </html>
