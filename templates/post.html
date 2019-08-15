@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-    
 	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>post page</title>
+		<link rel="stylesheet">
 	</head>
 	<body>
-			{% for post in userlist %}
-			
-			{{post}}<br>
-			
-			{% endfor %}
-
+		<form>
+			<input type="submit" value="게시글작성" formaction="/write">
+		</form>
+		{% for post in userlist %}
+		{{post}}<br>
+		{% endfor %}		
 	</body>
 </html>

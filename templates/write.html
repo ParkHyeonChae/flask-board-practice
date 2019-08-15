@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>write page</title>
+	</head>
+	<body>
+        <form method="POST" action="/write">
+            <p>
+            <h2> 게시글작성 </h2>
+            <h4> 접속자 : {{logininfo}} 님. </h4>
+            <input type="text" name="title" style="width:305px;" autofocus required wrap="hard" placeholder="제목을 입력하세요."><br><br>
+            <textarea name="content" cols="40" rows="10" placeholder="내용을 입력하세요."></textarea>
+            </p>
+			<button type = "submit">작성하기</button>
+		</form>
+	</body>
+</html>

@@ -11,7 +11,8 @@ def index():
         username = session['username']
         return render_template('index.html', logininfo = username)
     # session['logged'] = False
-    return render_template('index.html', logininfo = "로그인 안됨" )
+    else:
+        return render_template('index.html', logininfo = "로그인 안됨" )
 
 @app.route('/post')
 def post():
@@ -27,6 +28,37 @@ def post():
     cursor.close()
     conn.close()
     return render_template('post.html', userlist = user_list)
+
+@app.route('/write', methods=['GET', 'POST'])
+def write():
+    if request.method == 'POST':
+        if 'username' in session:
+            username = session['username']
+            
+            usertitle = request.form['title']
+            usercontent = request.form['content']
+
+            conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+            cursor = conn.cursor()
+             
+            query = "INSERT INTO board (name, title, content) values (%s, %s, %s)"
+            value = (username, usertitle, usercontent)
+
+            cursor.execute(query, value)
+            data = (cursor.fetchall())
+            conn.commit()
+            
+            cursor.close()
+            conn.close()
+
+            return render_template('post.html')
+        else:
+            pass
+            #return render_template('errorpage.html')
+    else:
+        if 'username' in session:
+            username = session['username']
+            return render_template ('write.html', logininfo=username)
 
 @app.route('/logout')
 def logout():

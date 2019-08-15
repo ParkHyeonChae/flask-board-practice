@@ -8,3 +8,14 @@ mysql> CREATE TABLE tbl_user (
      > PRIMARY KEY (user_name)
      > );
 
+-------------------------
+mysql> CREATE TABLE board (
+    -> id int(11) unsigned NOT NULL auto_increment,
+    -> name VARCHAR(20) NULL,
+    -> pass VARCHAR(100) NULL,
+    -> title VARCHAR(70) NULL,
+    -> content TEXT NULL,
+    -> wdate DATETIME NULL,
+    -> view int(11) NOT NULL DEFAULT '0',
+    -> PRIMARY KEY (id)
+    -> );
