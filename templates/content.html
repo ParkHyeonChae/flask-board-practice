@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>post content page</title>
+		<link rel="stylesheet">
+	</head>
+	<body>
+		<form>
+            <input type="submit" value="수정하기" formaction="/post/edit/{{title}}">
+            <input type="submit" value="목록으로" formaction="/post">
+		</form><br>
+		{% for content_ in content %}
+		{{content_}}<br>
+		{% endfor %}		
+	</body>
+</html>

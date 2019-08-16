@@ -9,9 +9,11 @@
 	<body>
 		<form>
 			<input type="submit" value="게시글작성" formaction="/write">
-		</form>
-		{% for post in userlist %}
-		{{post}}<br>
-		{% endfor %}		
+		</form><br>
+
+		{% for title in titlelist %}
+		<a href="/post/content/{{title}}">{{title}}</a><br>
+		{% endfor %}
+
 	</body>
 </html>

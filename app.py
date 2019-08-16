@@ -18,22 +18,73 @@ def index():
 def post():
     conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
     cursor = conn.cursor()
-    query = "SELECT user_name FROM tbl_user "
+    query = "SELECT title FROM board "
     cursor.execute(query)
-    user_list = [item[0] for item in cursor.fetchall()]
+    title_list = [post[0] for post in cursor.fetchall()]
 
     # for row in user_list:
     #     user_list = row[]
     
     cursor.close()
     conn.close()
-    return render_template('post.html', userlist = user_list)
+    return render_template('post.html', titlelist = title_list)
+
+@app.route('/post/content/<title>')
+def content(title):
+    conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+    cursor = conn.cursor()
+    query = "SELECT content FROM board WHERE title = %s"
+    value = title
+    cursor.execute(query, value)
+    content = [post[0] for post in cursor.fetchall()]
+
+    cursor.close()
+    conn.close()
+    return render_template('content.html', content = content, title = title)
+
+@app.route('/post/edit/<title>', methods=['GET', 'POST'])
+def edit(title):
+    if request.method == 'POST':
+        if 'username' in session:
+            username = session['username']
+ 
+            edittitle = request.form['title']
+            editcontent = request.form['content']
+
+            conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+            cursor = conn.cursor()
+            query = "UPDATE board SET title = %s, content = %s WHERE title = %s"
+            value = (edittitle, editcontent, title)
+            cursor.execute(query, value)
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+            return render_template('editSuccess.html')
+    else:
+        if 'username' in session:
+            username = session['username']
+            conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+            cursor = conn.cursor()
+            query = "SELECT title FROM board WHERE name = %s"
+            value = (username)
+            cursor.execute(query, value)
+            data = [post[0] for post in cursor.fetchall()]
+            cursor.close()
+            conn.close()
+
+            if title in data:
+                return render_template('edit.html',logininfo = username, title=title)
+            else:
+                return render_template('editError.html')
 
 @app.route('/write', methods=['GET', 'POST'])
 def write():
     if request.method == 'POST':
         if 'username' in session:
+
             username = session['username']
+            password = session['password']
             
             usertitle = request.form['title']
             usercontent = request.form['content']
@@ -41,17 +92,17 @@ def write():
             conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
             cursor = conn.cursor()
              
-            query = "INSERT INTO board (name, title, content) values (%s, %s, %s)"
-            value = (username, usertitle, usercontent)
+            query = "INSERT INTO board (name, pass, title, content) values (%s, %s, %s, %s)"
+            value = (username, password, usertitle, usercontent)
 
             cursor.execute(query, value)
-            data = (cursor.fetchall())
+            data = cursor.fetchall()
             conn.commit()
             
             cursor.close()
             conn.close()
 
-            return render_template('post.html')
+            return  redirect(url_for('post'))
         else:
             pass
             #return render_template('errorpage.html')
@@ -71,6 +122,7 @@ def login():
     if request.method == 'POST':
 
         session['username'] = request.form['id']
+        session['password'] = request.form['pw']
 
         userid = request.form['id']
         userpw = request.form['pw']
@@ -84,7 +136,7 @@ def login():
         value = (userid, userpw)
         #cursor.execute("set names utf8")
         cursor.execute(query, value)
-        data = (cursor.fetchall()) # SQL 실행 결과를 가져옴
+        data = cursor.fetchall() # SQL 실행 결과를 가져옴
         
         cursor.close()
         conn.close()

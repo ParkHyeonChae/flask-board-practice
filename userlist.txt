@@ -15,7 +15,7 @@ mysql> CREATE TABLE board (
     -> pass VARCHAR(100) NULL,
     -> title VARCHAR(70) NULL,
     -> content TEXT NULL,
-    -> wdate DATETIME NULL,
+    -> wdate TIMESTAMP ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL;
     -> view int(11) NOT NULL DEFAULT '0',
     -> PRIMARY KEY (id)
     -> );
