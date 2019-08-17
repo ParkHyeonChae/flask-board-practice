@@ -27,6 +27,7 @@ def post():
     
     cursor.close()
     conn.close()
+
     return render_template('post.html', titlelist = title_list)
 
 @app.route('/post/content/<title>')
@@ -67,17 +68,48 @@ def edit(title):
             conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
             cursor = conn.cursor()
             query = "SELECT title FROM board WHERE name = %s"
-            value = (username)
+            value = username
             cursor.execute(query, value)
             data = [post[0] for post in cursor.fetchall()]
             cursor.close()
             conn.close()
 
             if title in data:
-                return render_template('edit.html',logininfo = username, title=title)
+                return render_template('edit.html',logininfo = username, title = title)
             else:
                 return render_template('editError.html')
 
+@app.route('/post/delete/<title>')
+def delete(title):
+    if 'username' in session:
+        username = session['username']
+        conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+        cursor = conn.cursor()
+        query = "SELECT title FROM board WHERE name = %s"
+        value = username
+        cursor.execute(query, value)
+        data = [post[0] for post in cursor.fetchall()]
+        cursor.close()
+        conn.close()
+
+        if title in data:
+            return render_template('delete.html', title = title)
+        else:
+            return render_template('editError.html')
+
+@app.route('/post/delete/success/<title>')
+def deletesuccess(title):
+    conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+    cursor = conn.cursor()
+    query = "DELETE FROM board WHERE title = %s"
+    value = title
+    cursor.execute(query, value)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    return redirect(url_for('post'))
+    
 @app.route('/write', methods=['GET', 'POST'])
 def write():
     if request.method == 'POST':
@@ -96,13 +128,13 @@ def write():
             value = (username, password, usertitle, usercontent)
 
             cursor.execute(query, value)
-            data = cursor.fetchall()
+            #data = cursor.fetchall()
             conn.commit()
             
             cursor.close()
             conn.close()
 
-            return  redirect(url_for('post'))
+            return redirect(url_for('post'))
         else:
             pass
             #return render_template('errorpage.html')

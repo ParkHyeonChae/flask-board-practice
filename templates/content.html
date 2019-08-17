@@ -8,7 +8,8 @@
 	</head>
 	<body>
 		<form>
-            <input type="submit" value="수정하기" formaction="/post/edit/{{title}}">
+			<input type="submit" value="수정하기" formaction="/post/edit/{{title}}">
+			<input type="submit" value="삭제하기" formaction="/post/delete/{{title}}">
             <input type="submit" value="목록으로" formaction="/post">
 		</form><br>
 		{% for content_ in content %}

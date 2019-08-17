@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title></title>
+        <script>
+            var result = confirm("삭제하시겠습니까?");
+            if(result){
+                document.location.href="/post/delete/success/{{title}}";
+            }
+            else{
+                document.location.href="/post";
+            }
+        </script>
+    </head>
+
+<body></body>
+</html>
