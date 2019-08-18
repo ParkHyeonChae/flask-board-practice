@@ -19,3 +19,6 @@ mysql> CREATE TABLE board (
     -> view int(11) NOT NULL DEFAULT '0',
     -> PRIMARY KEY (id)
     -> );
+
+-------------------------
+wdate 생성시간만 알고싶다면 wdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP

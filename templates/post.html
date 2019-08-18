@@ -11,8 +11,8 @@
 			<input type="submit" value="게시글작성" formaction="/write">
 		</form><br>
 
-		{% for title in titlelist %}
-		<a href="/post/content/{{title}}">{{title}}</a><br>
+		{% for post in postlist %}
+		<a href="/post/content/{{post['title']}}">{{post['title']}}</a> &emsp; {{post['name']}} &emsp; {{post['view']}} &emsp; {{post['wdate']}}<br>
 		{% endfor %}
 
 	</body>
