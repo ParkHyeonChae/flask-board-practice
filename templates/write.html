@@ -35,9 +35,7 @@
         <div class="header">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Add Item</a>
-                    </li>
-                    <li>접속자 : {{logininfo}} 님.</li> 
+                    <li>접속자 : <strong>{{logininfo}}</strong> 님</li> 
                     </li>
                 </ul>
             </nav>
@@ -47,27 +45,27 @@
             <form class="form-horizontal" method="post" action="/write">
                 <fieldset>
                     <!-- Form Name -->
-                    <legend>Create Your Wish</legend>
+                    <legend>Write Your Wish</legend>
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="txtTitle">Title</label>
-                        <div class="col-md-4">
-                            <input id="txtTitle" name="title" type="text" placeholder="제목을 입력하세요." class="form-control input-md">
+                        <label class="col-md-12" for="txtTitle">Title</label>
+                        <div class="col-md-12">
+                            <input id="txtTitle" name="title" type="text" placeholder="제목을 입력하세요." class="form-control input-md", autofocus required><!--required : 공백입력시 경고-->
                         </div>
                     </div>
  
                     <!-- Textarea -->
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="txtPost">Post</label>
-                        <div class="col-md-4">
-                            <textarea class="form-control" id="txtPost" name="content", placeholder="내용을 입력하세요."></textarea>
+                        <label class="col-md-12" for="txtPost">Post</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" id="txtPost" name="content" placeholder="내용을 입력하세요." style="height:260px;" required></textarea>
                         </div>
                     </div>
  
                     <!-- Button -->
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="singlebutton"></label>
-                        <div class="col-md-4">
+                        <label class="col-md-12 control-label" for="singlebutton"></label>
+                        <div class="col-md-12">
                             <input id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit" value="작성하기" />
                         </div>
                     </div>
@@ -76,10 +74,6 @@
             </form>
  
         </section>
-        <footer class="footer">
-            <p>&copy; Company 2015</p>
-        </footer>
- 
     </div>
 </body>
  
