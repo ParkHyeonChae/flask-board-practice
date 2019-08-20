@@ -20,15 +20,17 @@
 </html>
 -->
 
-
 <!DOCTYPE html>
 <html lang="en">
  
 <head>
     <title>Python Flask Bucket List App</title> 
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/starter-template.css" rel="stylesheet">
-    <script src="../static/js/jquery-1.11.2.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </head> 
 <body>
     <div class="container">
@@ -39,13 +41,13 @@
                     </li>
                 </ul>
             </nav>
-            <h3 class="text-muted">게시판 글쓰기</h3>
+            <h3 class="text-muted">게시판 글작성</h3>
         </div>
         <section>
             <form class="form-horizontal" method="post" action="/write">
                 <fieldset>
                     <!-- Form Name -->
-                    <legend>Write Your Wish</legend>
+                    <legend>Write Your Post</legend>
                     <!-- Text input-->
                     <div class="form-group">
                         <label class="col-md-12" for="txtTitle">Title</label>
@@ -66,7 +68,7 @@
                     <div class="form-group">
                         <label class="col-md-12 control-label" for="singlebutton"></label>
                         <div class="col-md-12">
-                            <input id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit" value="작성하기" />
+                            <input id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit" value="작성하기">
                         </div>
                     </div>
  

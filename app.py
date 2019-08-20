@@ -20,7 +20,7 @@ def index():
 def post():
     conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    query = "SELECT name, title, view, wdate FROM board ORDER BY id DESC" # ORDER BY 컬럼명 DESC : 역순출력, ASC : 순차출력
+    query = "SELECT id, name, title, wdate, view FROM board ORDER BY id DESC" # ORDER BY 컬럼명 DESC : 역순출력, ASC : 순차출력
     cursor.execute(query)
     #title_list = [post[0] for post in cursor.fetchall()]
     post_list = cursor.fetchall()
@@ -36,6 +36,7 @@ def post():
 # 조회수 증가, post페이지의 게시글 클릭시 title과 content 비교 후 게시글 내용 출력
 def content(title):
     if 'username' in session:
+        username = session['username']
         conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
         cursor = conn.cursor()
         query = "UPDATE board SET view = view + 1 WHERE title = %s"
@@ -54,7 +55,7 @@ def content(title):
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('content.html', content = content, title = title)
+        return render_template('content.html', content = content, title = title, username = username)
     else:
         return render_template ('Error.html')
 
