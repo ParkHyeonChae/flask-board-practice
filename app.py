@@ -18,6 +18,10 @@ def index():
 @app.route('/post')
 # board테이블의 게시판 제목리스트 역순으로 출력
 def post():
+    if 'username' in session:
+        username = session['username']
+    else:
+        username = None
     conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     query = "SELECT id, name, title, wdate, view FROM board ORDER BY id DESC" # ORDER BY 컬럼명 DESC : 역순출력, ASC : 순차출력
@@ -30,7 +34,7 @@ def post():
     cursor.close()
     conn.close()
 
-    return render_template('post.html', postlist = post_list)
+    return render_template('post.html', postlist = post_list, logininfo=username)
 
 @app.route('/post/content/<title>')
 # 조회수 증가, post페이지의 게시글 클릭시 title과 content 비교 후 게시글 내용 출력
@@ -93,7 +97,7 @@ def edit(title):
             conn.close()
 
             if title in data:
-                return render_template('edit.html',logininfo = username, title = title)
+                return render_template('edit.html', title=title, logininfo=username)
             else:
                 return render_template('editError.html')
         else:

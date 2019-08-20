@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
@@ -13,4 +13,35 @@
 			<button type = "submit">signup</button>
 		</form>
 	</body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maxinum-scale=1, user-scalable=no">
+	
+    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+   		<title>regist page</title>
+	</head>
+
+	<body>
+		<br><div class="container">
+		<div class="card align-middle" style="width:100%; border-radius:20px;">
+		<div class="card-title" style="margin-top:50px;">
+			<h2 class="card-title text-center" style="color:#113366;">SIGN UP</h2>
+		</div>
+		<div class="card-body">
+    	<form class="form-signin" method="POST" action="/regist"> 
+        	<input type="text" name="id" class="form-control" placeholder="username" required autofocus><br>
+        	<input type="password" name="pw" class="form-control" placeholder="password" required><br>
+			<button class="btn btn-primary btn-block" type="submit">회원가입</button>
+			<button class="btn btn-primary btn-block" type="button" onclick="location.href='/'">메인으로</button>
+    	</form>
+		</div>
+		</div>
+  </body>
 </html>
