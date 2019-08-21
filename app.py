@@ -13,7 +13,8 @@ def index():
 
         return render_template('index.html', logininfo = username)
     else:
-        return render_template('index.html', logininfo = "로그인 안됨" )
+        username = None
+        return render_template('index.html', logininfo = username )
 
 @app.route('/post')
 # board테이블의 게시판 제목리스트 역순으로 출력
@@ -178,7 +179,7 @@ def logout():
 
 @app.route('/login', methods=['GET','POST'])
 # GET -> 로그인 페이지 연결
-# 로그인 시 id, pw 세션유지 후 form에 입력된 id, pw를 table에 저장된 id, pw에 비교후 일치하면 로그인
+# POST -> 로그인 시 id, pw 세션유지 후 form에 입력된 id, pw를 table에 저장된 id, pw에 비교후 일치하면 로그인
 def login():
     if request.method == 'POST':
         session['username'] = request.form['id']
@@ -201,7 +202,7 @@ def login():
             data = row[0]
         
         if data:
-            return render_template('main.html', logininfo = logininfo)
+            return render_template('index.html', logininfo = logininfo)
         else:
             return render_template('loginError.html')
     else:
@@ -236,13 +237,6 @@ def regist():
         conn.close()
     else:
         return render_template('regist.html')        
-
-@app.route('/main', methods=['GET','POST'])
-def main():
-    if 'username' in session:
-        username = session['username']
-        return render_template('main.html', logininfo = username)
-    return render_template('main.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
