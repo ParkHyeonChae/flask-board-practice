@@ -65,16 +65,23 @@
 		
 		<title>Flask Test Page</title>
 	</head>
-    <body>
+    <body>	
           <div class="view" style="background-image: url(static/images/bg1.jpg); background-repeat: no-repeat; background-size: cover; background-position: center center;">
                 <div class="row h-100">
-                  <div class="col-sm-12 my-auto white-text text-left">
+                  <div class="col-sm-10 my-auto white-text text-left">
 					  <div class="container">
-						<a class="text-center"><strong><font color="white" size=7>FLASK TEST PAGE</font></strong></a>
-                  		<hr style="border: solid 1.3px white; width:26%; margin-left:0px">
-                  		<h5 class="text-uppercase mb-0"><strong>Photography & design</strong></h5>
-                   		<a href="/login"><font color="white" size=5>SIGN IN&nbsp;</font></a> <font color="white" size=6>&middot;&nbsp;</font>
-						<a href="/regist"><font color="white" size=5>SIGN UP</font></a>
+						  <a class="display-2 text-white font-weight-bold">Flask Test Page</a>
+						<!--<a class="text-center"><strong><font color="white" size=7>FLASK TEST PAGE</font></strong></a>-->
+                  		<hr style="border: solid 2px rgb(255, 255, 255); width:620px; margin-left:0px">
+						{% if logininfo %}
+						<h5 class="mb-0">Welcome <strong>{{logininfo}}.</strong></h5>
+						<a href="/post"><font color="white" size=6><strong>GET START&nbsp;</strong></font></a> <font color="white" size=6>&middot;&nbsp;</font>
+						<a href="/logout"><font color="white" size=6><strong>LOGOUT</strong></font></a>
+						{% else %}
+						<h5 class="mb-0"><strong>flasktestpage & flasktestpage</strong></h5>   
+						<a href="/login"><font color="white" size=6><strong>SIGN IN&nbsp;</strong></font></a> <font color="white" size=6>&middot;&nbsp;</font>
+						<a href="/regist"><font color="white" size=6><strong>SIGN UP</strong></font></a>
+						{% endif %}
 					</div>
                   </div>
 				</div>
