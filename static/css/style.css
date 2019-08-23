@@ -40,3 +40,9 @@ h5 {
   border-top: 3px solid #fff;
   width: 80px;
 }
+
+.titlefont {
+  font-size: 40px;
+  color: white;
+  font-weight: bold;
+}
