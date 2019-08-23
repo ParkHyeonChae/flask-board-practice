@@ -41,7 +41,8 @@
             <h3 class="text-muted">게시판 글수정</h3>
         </div>
         <section>
-            <form class="form-horizontal" method="post" action="/post/edit/{{title}}">
+            {% for data_ in data %}
+            <form class="form-horizontal" method="post" action="/post/edit/{{data_['id']}}">
                 <fieldset>
                     <!-- Form Name -->
                     <legend>Edit Your Post</legend>
@@ -49,14 +50,14 @@
                     <div class="form-group">
                         <label class="col-md-12" for="txtTitle">Title</label>
                         <div class="col-md-12">
-                            <input id="txtTitle" name="title" type="text" placeholder="제목을 입력하세요." class="form-control input-md", autofocus required value="{{title}}"><!--required : 공백입력시 경고-->
+                            <input id="txtTitle" name="title" type="text" placeholder="제목을 입력하세요." class="form-control input-md", autofocus required value="{{data_['title']}}"><!--required : 공백입력시 경고-->
                         </div>
                     </div>
                     <!-- Textarea -->
                     <div class="form-group">
                         <label class="col-md-12" for="txtPost">Post</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" id="txtPost" name="content" placeholder="내용을 입력하세요." style="height:260px;" required value="{{content}}"></textarea>
+                            <textarea class="form-control" id="txtPost" name="content" placeholder="내용을 입력하세요." style="height:260px;" required>{{data_['content']}}</textarea>
                         </div>
                     </div>
                     <!-- Button -->
@@ -68,6 +69,7 @@
                     </div>
                 </fieldset>
             </form>
+            {% endfor %}
         </section>
     </div>
 </body>

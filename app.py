@@ -37,37 +37,38 @@ def post():
 
     return render_template('post.html', postlist = post_list, logininfo=username)
 
-@app.route('/post/content/<title>')
+@app.route('/post/content/<id>')
 # 조회수 증가, post페이지의 게시글 클릭시 title과 content 비교 후 게시글 내용 출력
-def content(title):
+def content(id):
     if 'username' in session:
         username = session['username']
         conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
         cursor = conn.cursor()
-        query = "UPDATE board SET view = view + 1 WHERE title = %s"
-        value = title
+        query = "UPDATE board SET view = view + 1 WHERE id = %s"
+        value = id
         cursor.execute(query, value)
         conn.commit()
         cursor.close()
         conn.close()
 
         conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
-        cursor = conn.cursor()
-        query = "SELECT content FROM board WHERE title = %s"
-        value = title
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        query = "SELECT id, title, content FROM board WHERE id = %s"
+        value = id
         cursor.execute(query, value)
-        content = [post[0] for post in cursor.fetchall()]
+        #content = [post[0] for post in cursor.fetchall()]
+        content = cursor.fetchall()
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('content.html', content = content, title = title, username = username)
+        return render_template('content.html', data = content, username = username)
     else:
         return render_template ('Error.html')
 
-@app.route('/post/edit/<title>', methods=['GET', 'POST'])
+@app.route('/post/edit/<id>', methods=['GET', 'POST'])
 # GET -> 유지되고있는 username 세션과 현재 접속되어진 title과 일치시 edit페이지 연결
 # POST -> 접속되어진 title과 일치하는 title, content를 찾아 UPDATE
-def edit(title):
+def edit(id):
     if request.method == 'POST':
         if 'username' in session:
             username = session['username']
@@ -77,8 +78,8 @@ def edit(title):
 
             conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
             cursor = conn.cursor()
-            query = "UPDATE board SET title = %s, content = %s WHERE title = %s"
-            value = (edittitle, editcontent, title)
+            query = "UPDATE board SET title = %s, content = %s WHERE id = %s"
+            value = (edittitle, editcontent, id)
             cursor.execute(query, value)
             conn.commit()
             cursor.close()
@@ -90,48 +91,58 @@ def edit(title):
             username = session['username']
             conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
             cursor = conn.cursor()
-            query = "SELECT title FROM board WHERE name = %s"
-            value = username
+            query = "SELECT name FROM board WHERE id = %s"
+            value = id
             cursor.execute(query, value)
             data = [post[0] for post in cursor.fetchall()]
+            #data=cursor.fetchall()
             cursor.close()
             conn.close()
-
-            if title in data:
-                return render_template('edit.html', title=title, logininfo=username)
+           
+            if username in data:
+                conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+                cursor = conn.cursor(pymysql.cursors.DictCursor)
+                query = "SELECT id, title, content FROM board WHERE id = %s"
+                value = id
+                cursor.execute(query, value)
+                #data = [post[0] for post in cursor.fetchall()]
+                postdata = cursor.fetchall()
+                cursor.close()
+                conn.close()
+                return render_template('edit.html', data=postdata, logininfo=username)
             else:
                 return render_template('editError.html')
         else:
             return render_template ('Error.html')
 
-@app.route('/post/delete/<title>')
+@app.route('/post/delete/<id>')
 # 유지되고 있는 username 세션과 title 일치시 삭제확인 팝업 연결
-def delete(title):
+def delete(id):
     if 'username' in session:
         username = session['username']
         conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
         cursor = conn.cursor()
-        query = "SELECT title FROM board WHERE name = %s"
-        value = username
+        query = "SELECT name FROM board WHERE id = %s"
+        value = id
         cursor.execute(query, value)
         data = [post[0] for post in cursor.fetchall()]
         cursor.close()
         conn.close()
 
-        if title in data:
-            return render_template('delete.html', title = title)
+        if username in data:
+            return render_template('delete.html', id = id)
         else:
             return render_template('editError.html')
     else:
         return render_template ('Error.html')
 
-@app.route('/post/delete/success/<title>')
+@app.route('/post/delete/success/<id>')
 # 삭제 확인시 title 과 일치하는 컬럼 삭제, 취소시 /post 페이지 연결
-def deletesuccess(title):
+def deletesuccess(id):
     conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
     cursor = conn.cursor()
-    query = "DELETE FROM board WHERE title = %s"
-    value = title
+    query = "DELETE FROM board WHERE id = %s"
+    value = id
     cursor.execute(query, value)
     conn.commit()
     cursor.close()
@@ -182,9 +193,6 @@ def logout():
 # POST -> 로그인 시 id, pw 세션유지 후 form에 입력된 id, pw를 table에 저장된 id, pw에 비교후 일치하면 로그인
 def login():
     if request.method == 'POST':
-        session['username'] = request.form['id']
-        session['password'] = request.form['pw']
-
         userid = request.form['id']
         userpw = request.form['pw']
 
@@ -202,6 +210,8 @@ def login():
             data = row[0]
         
         if data:
+            session['username'] = request.form['id']
+            session['password'] = request.form['pw']
             return render_template('index.html', logininfo = logininfo)
         else:
             return render_template('loginError.html')

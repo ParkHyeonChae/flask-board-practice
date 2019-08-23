@@ -35,17 +35,17 @@
 		<div class="container">
 			<div class="card">
 				<div class="card-body">
-					<div class="card-header"><h3><strong>{{title}}</strong></h3></div>
+					{% for data_ in data %}
+					<div class="card-header"><h3><strong>{{data_['title']}}</strong></h3></div>
 					<div class="card-body">
-						{% for content_ in content %}
-						{{content_}}
-						{% endfor %}
+						{{data_['content']}}
 					</div>
 					<div class="card-footer">
-						<a href="/post/edit/{{title}}" class="card-link">수정하기</a>
-						<a href="/post/delete/{{title}}" class="card-link">삭제하기</a>
+						<a href="/post/edit/{{data_['id']}}" class="card-link">수정하기</a>
+						<a href="/post/delete/{{data_['id']}}" class="card-link">삭제하기</a>
 						<a href="/post" class="card-link">목록으로</a>
 					</div>
+					{% endfor %}
 				</div>
 			</div>
 		</div>	
