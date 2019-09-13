@@ -1,57 +1,3 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maxinum-scale=1, user-scalable=no">
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-		
-		<title>main page</title>
-	</head>
-	<body>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
-		
-		<a class="navbar-brand" href="/">HOME</a>
-		
-		<div class="container-fluid full-width">
-		<ul class="nav navbar-nav">
-		<li class="nav-item">
-			<a class="nav-link" href="/post">Post</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="#">Post2</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="#">Post3</a>
-		</li>
-		</ul>
-		<div>
-		{% if logininfo %}
-		<button class="btn btn-dark btn-right" type="button" onclick="location.href='/logout'">로그아웃</button>
-		{% else %}
-		<button class="btn btn-dark btn-right" type="button" onclick="location.href='/login'">로그인</button>
-		{% endif %}
-		</div>
-	</nav>
-	</div>
-
-	<body>
-		<div class="container">
-			<h1 class="text-center"><strong><a style="color:#110957;">POST PAGE</a></strong></h1>
-			{% if logininfo %}
-			<span class="text-center">{{logininfo}} 님 환영합니다.</span>
-			<p class="text-center" href="/logout">로그아웃</p> &nbsp;&bull;&nbsp;
-			<p class="text-center" href="/post">게시판</p>
-			{% else %}
-			<p class="text-center"><a class="btn btn-dark btn-md" href="/login" role="button">시작하기</a></p>
-			{% endif %}
-		</div>
-	</body>
-</body>
-</html>-->
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -63,27 +9,30 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 		
-		<title>Flask Test Page</title>
+		<title>Post Board Of All</title>
 	</head>
     <body>	
-          <div class="view" style="background-image: url(static/images/bg.jpg); background-repeat: no-repeat; background-size: cover; background-position: center center;">
-                <div class="row h-100">
-                  <div class="col-sm-12 my-auto white-text text-center">
-					  <div class="container">
-						  <a class="display-2 text-white font-weight-bold">Flask Test Page</a>
-						<!--<a class="text-center"><strong><font color="white" size=7>FLASK TEST PAGE</font></strong></a>-->
-                  		<hr style="border: solid 2px rgb(255, 255, 255); width:620px; margin-auto">
-						{% if logininfo %}
-						<h5 class="mb-0">Welcome <strong>{{logininfo}}.</strong></h5>
-						<a href="/post"><font color="white" size=6><strong>GET START&nbsp;</strong></font></a> <font color="white" size=6>&middot;&nbsp;</font>
-						<a href="/logout"><font color="white" size=6><strong>LOGOUT</strong></font></a>
-						{% else %}
-						<h5 class="mb-0"><strong>flasktestpage & flasktestpage</strong></h5>   
-						<a href="/login"><font color="white" size=6><strong>SIGN IN&nbsp;</strong></font></a> <font color="white" size=6>&middot;&nbsp;</font>
-						<a href="/regist"><font color="white" size=6><strong>SIGN UP</strong></font></a>
-						{% endif %}
-					</div>
-                  </div>
+		<div class="view" style="background-image: url(static/images/bg.jpg); background-repeat: no-repeat; background-size: cover; background-position: center center; opacity: 1;">
+			<div class="row h-100">
+				<div class="col-sm-12 my-auto white-text text-center">
+					<div class="container">
+					{% if logininfo %}
+					<h5 style="text-shadow: 2px 2px black;"><font color="white" size=5>Welcome <strong>{{logininfo}}.</strong></font></h5>
+					{% endif %}
+					<hr style="border: solid 2px rgb(255, 255, 255); width:700px; margin-bottom: -12px">
+						<a class="display-2 text-white font-weight-bold"
+						style="text-shadow:0 5px black,5px 0 black;">Post Board Of All</a>
+					<!--<a class="text-center"><strong><font color="white" size=7>FLASK TEST PAGE</font></strong></a>-->
+					<hr style="border: solid 2px rgb(255, 255, 255); width:700px; margin-top:0px">
+					{% if logininfo %}
+					<a href="/post" style="text-shadow:2px 2px black;"><font color="white" size=6><strong>GET START&nbsp;</strong></font></a> <font color="white" size=6>&middot;&nbsp;</font>
+					<a href="/logout" style="text-shadow: 2px 2px black;"><font color="white" size=6><strong>LOGOUT</strong></font></a>
+					{% else %}   
+					<a href="/login" style="text-shadow: 2px 2px black;"><font color="white" size=6><strong>SIGN IN&nbsp;</strong></font></a> <font color="white" size=6>&middot;&nbsp;</font>
+					<a href="/regist" style="text-shadow: 2px 2px black;"><font color="white" size=6><strong>SIGN UP</strong></font></a>
+					{% endif %}
 				</div>
+				</div>
+			</div>
     </body>
 </html>

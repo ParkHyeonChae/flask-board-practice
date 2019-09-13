@@ -5,6 +5,10 @@ import pymysql
 app = Flask(__name__)
 app.secret_key = 'sample_secret'
 
+def connectsql():
+    conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+    return conn
+
 @app.route('/')
 # 세션유지를 통한 로그인 유무 확인
 def index():
@@ -23,14 +27,11 @@ def post():
         username = session['username']
     else:
         username = None
-    conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+    conn = connectsql()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     query = "SELECT id, name, title, wdate, view FROM board ORDER BY id DESC" # ORDER BY 컬럼명 DESC : 역순출력, ASC : 순차출력
     cursor.execute(query)
-    #title_list = [post[0] for post in cursor.fetchall()]
     post_list = cursor.fetchall()
-    #for row in user_list:
-    #     user_list = row[]
     
     cursor.close()
     conn.close()
@@ -42,7 +43,7 @@ def post():
 def content(id):
     if 'username' in session:
         username = session['username']
-        conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+        conn = connectsql()
         cursor = conn.cursor()
         query = "UPDATE board SET view = view + 1 WHERE id = %s"
         value = id
@@ -51,12 +52,11 @@ def content(id):
         cursor.close()
         conn.close()
 
-        conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+        conn = connectsql()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         query = "SELECT id, title, content FROM board WHERE id = %s"
         value = id
         cursor.execute(query, value)
-        #content = [post[0] for post in cursor.fetchall()]
         content = cursor.fetchall()
         conn.commit()
         cursor.close()
@@ -76,7 +76,7 @@ def edit(id):
             edittitle = request.form['title']
             editcontent = request.form['content']
 
-            conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+            conn = connectsql()
             cursor = conn.cursor()
             query = "UPDATE board SET title = %s, content = %s WHERE id = %s"
             value = (edittitle, editcontent, id)
@@ -89,23 +89,21 @@ def edit(id):
     else:
         if 'username' in session:
             username = session['username']
-            conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+            conn = connectsql()
             cursor = conn.cursor()
             query = "SELECT name FROM board WHERE id = %s"
             value = id
             cursor.execute(query, value)
             data = [post[0] for post in cursor.fetchall()]
-            #data=cursor.fetchall()
             cursor.close()
             conn.close()
            
             if username in data:
-                conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+                conn = connectsql()
                 cursor = conn.cursor(pymysql.cursors.DictCursor)
                 query = "SELECT id, title, content FROM board WHERE id = %s"
                 value = id
                 cursor.execute(query, value)
-                #data = [post[0] for post in cursor.fetchall()]
                 postdata = cursor.fetchall()
                 cursor.close()
                 conn.close()
@@ -120,7 +118,7 @@ def edit(id):
 def delete(id):
     if 'username' in session:
         username = session['username']
-        conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+        conn = connectsql()
         cursor = conn.cursor()
         query = "SELECT name FROM board WHERE id = %s"
         value = id
@@ -139,7 +137,7 @@ def delete(id):
 @app.route('/post/delete/success/<id>')
 # 삭제 확인시 id와 일치하는 컬럼 삭제, 취소시 /post 페이지 연결
 def deletesuccess(id):
-    conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+    conn = connectsql()
     cursor = conn.cursor()
     query = "DELETE FROM board WHERE id = %s"
     value = id
@@ -162,7 +160,7 @@ def write():
             usertitle = request.form['title']
             usercontent = request.form['content']
 
-            conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+            conn = connectsql()
             cursor = conn.cursor() 
             query = "INSERT INTO board (name, pass, title, content) values (%s, %s, %s, %s)"
             value = (username, password, usertitle, usercontent)
@@ -173,8 +171,7 @@ def write():
 
             return redirect(url_for('post'))
         else:
-            pass
-            #return render_template('errorpage.html')
+            return render_template('errorpage.html')
     else:
         if 'username' in session:
             username = session['username']
@@ -197,7 +194,7 @@ def login():
         userpw = request.form['pw']
 
         logininfo = request.form['id']
-        conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+        conn = connectsql()
         cursor = conn.cursor()
         query = "SELECT * FROM tbl_user WHERE user_name = %s AND user_password = %s"
         value = (userid, userpw)
@@ -226,7 +223,7 @@ def regist():
         userid = request.form['id']
         userpw = request.form['pw']
 
-        conn = pymysql.connect(host='localhost', user = 'root', passwd = '2510', db = 'userlist', charset='utf8')
+        conn = connectsql()
         cursor = conn.cursor()
         query = "SELECT * FROM tbl_user WHERE user_name = %s"
         value = userid
